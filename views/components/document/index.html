@@ -1,0 +1,170 @@
+<div class="animated fadeIn">
+
+ <div id="alertArea"></div>
+
+ <div class="row">
+   <div class="row row-separator col-sm-5" ng-if="client.documentaryCenterAdmin" >
+     <a class="btn btn-primary" ui-sref-active="active" ui-sref="app.docs.migrateDocs"><i class="fa fa-file-excel-o"></i> Migrar documentos</a>
+   </div>
+
+   <form class="row row-separator" ng-submit="doSearch()">
+    <div class="col-sm-5">
+      <label>Codigo:</label>
+      <input type="text" placeholder="Codigo de documento o registro" class="form-control" ng-model="search.code"/>
+    </div>
+    <div class="col-sm-5">
+      <label>Nombre:</label>
+      <input type="text" placeholder="Nombre de documento o registro" class="form-control" ng-model="search.name"/>
+    </div>
+    <div class="col-sm-5 ">
+      <label for="dept">Planta :</label>
+      <select name="dept" id="dept" class="form-control" ng-model="search.business" ng-options="item.business as item.business for item in business">
+        <option value="">Seleccione una planta  {{optional ? '(optional)' : ''}}</option>
+      </select>
+    </div>
+    <div class="col-sm-5">
+      <label for="dept">Departamento:</label>
+      <select name="dept" id="dept" class="form-control" ng-model="search.department" ng-options="item.department as item.department for item in departments | filter: { business: search.business}">
+        <option value="">Seleccione un departamento  {{optional ? '(optional)' : ''}}</option>
+      </select>
+    </div>
+
+    <div class="col-sm-5 row-separator">
+      <label for="dept">Tipo de Documento:</label>
+      <select name="dept" id="dept" class="form-control" ng-model="search.docType" ng-options="item.type as item.type for item in docTypes">
+        <option value="">Seleccione un tipo de documento  {{optional ? '(optional)' : ''}}</option>
+      </select>
+    </div>
+    <div class="col-sm-8">
+      <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+    </div>
+  </form>
+
+  <div class="col-sm-12" ng-show="documents.length < 1">
+    <h5>No se encontraron documentos!</h5>
+  </div>
+
+  <table class="table table-hover table-responsive" ng-show="documents.length > 0">
+    <thead>
+      <tr>
+       <td><strong>#</strong></td>
+       <td>
+         <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+          <strong>Nombre del documento</strong>
+          <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+          <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+        </a>
+      </td>
+      <td>
+       <a href="#" ng-click="sortType = 'publication.code'; sortReverse = !sortReverse">
+        <strong>Codigo</strong>
+        <span ng-show="sortType == 'publication.code' && !sortReverse" class="fa fa-caret-down"></span>
+        <span ng-show="sortType == 'publication.code' && sortReverse" class="fa fa-caret-up"></span>
+      </a>
+    </td>
+    <td>
+     <a href="#" ng-click="sortType = 'publication.revision'; sortReverse = !sortReverse">
+      <strong>Revision</strong>
+      <span ng-show="sortType == 'publication.revision' && !sortReverse" class="fa fa-caret-down"></span>
+      <span ng-show="sortType == 'publication.revision' && sortReverse" class="fa fa-caret-up"></span>
+    </a>
+  </td>
+  <td>
+    <a href="#" ng-click="sortType = 'type.type'; sortReverse = !sortReverse">
+     <strong>Tipo</strong>
+     <span ng-show="sortType == 'type.type' && !sortReverse" class="fa fa-caret-down"></span>
+     <span ng-show="sortType == 'type.type' && sortReverse" class="fa fa-caret-up"></span>
+   </a>
+ </td>
+ <td>
+   <a href="#" ng-click="sortType = 'business'; sortReverse = !sortReverse">
+     <strong>Planta</strong>
+     <span ng-show="sortType == 'business' && !sortReverse" class="fa fa-caret-down"></span>
+     <span ng-show="sortType == 'business' && sortReverse" class="fa fa-caret-up"></span>
+   </a>
+ </td>
+ <td>
+   <a href="#" ng-click="sortType = 'department'; sortReverse = !sortReverse">
+    <strong>Departamento</strong>
+    <span ng-show="sortType == 'department' && !sortReverse" class="fa fa-caret-down"></span>
+    <span ng-show="sortType == 'department' && sortReverse" class="fa fa-caret-up"></span>
+  </a>
+</td>
+
+<td>
+ <a href="#" ng-click="sortType = 'publication.publicationDate'; sortReverse = !sortReverse">
+   <strong>Fecha de publicacion</strong>
+   <span ng-show="sortType == 'publication.publicationDate' && !sortReverse" class="fa fa-caret-down"></span>
+   <span ng-show="sortType == 'publication.publicationDate' && sortReverse" class="fa fa-caret-up"></span>
+ </a>
+</td>
+<td>
+ <a href="#" ng-click="sortType = 'timeStored'; sortReverse = !sortReverse">
+  <strong>Tiempo de almacenamiento</strong>
+  <span ng-show="sortType == 'timeStored' && !sortReverse" class="fa fa-caret-down"></span>
+  <span ng-show="sortType == 'timeStored' && sortReverse" class="fa fa-caret-up"></span>
+</a>
+</td>
+<td>
+ <a href="#" ng-click="sortType = 'expiredDate'; sortReverse = !sortReverse">
+   <strong>Fecha de revision</strong>
+   <span ng-show="sortType == 'expiredDate' && !sortReverse" class="fa fa-caret-down"></span>
+   <span ng-show="sortType == 'expiredDate' && sortReverse" class="fa fa-caret-up"></span>
+ </a>
+</td>
+<td>
+ <a href="#" ng-click="sortType = 'periodExpirationTime'; sortReverse = !sortReverse">
+   <strong>Periodo de revision</strong>
+   <span ng-show="sortType == 'periodExpirationTime' && !sortReverse" class="fa fa-caret-down"></span>
+   <span ng-show="sortType == 'periodExpirationTime' && sortReverse" class="fa fa-caret-up"></span>
+ </a>
+</td>
+<td>
+ <strong>Tiempo restante</strong>
+</td>
+<td><strong>Estado</strong></td>
+<td>
+ <strong>Ubicacion</strong>
+</td>
+<td></td>
+</tr>
+</thead>
+<tbody>
+  <tr ng:repeat="e in documents  | orderBy:sortType:sortReverse" ng-class="{'danger' : e.status === 'Anulado'}">
+   <td >{{$index+1}}</td>
+   <td>{{e.name}}</td>
+   <td>
+     <a href="#" ng-click="downloadFiles(e)" title="Descargar los archivos">
+       {{e.publication.code}}
+     </a>
+   </td>
+   <td>
+    {{e.publication.revision}}
+  </td>
+  <td>{{e.type.type}}</td>
+  <td>{{e.business}}</td>
+  <td>{{e.department}}</td>
+  <td>{{e.publication.publicationDate | date: 'yyyy/MM/dd'}}</td>
+  <td>
+    {{e.timeStored ? e.timeStored + ' meses': 'Indefinido'}}
+  </td>
+  <td>{{e.expiredDate ? e.expiredDate : 'Indefinido' | date: 'yyyy/MM/dd'}}</td>
+  <td>{{e.periodExpirationTime ? e.periodExpirationTime + ' meses' : 'Indefinido'}}</td>
+  <td>{{expiredCheck[e._id].time + expiredCheck[e._id].suffix}}</td>
+  <td ng-class="{'warning-doc' : expiredCheck[e._id].time > 0 && expiredCheck[e._id].time < 63, 'expired-doc' : expiredCheck[e._id].time < 1, 'good-doc' : expiredCheck[e._id].time  > 62 || expiredCheck[e._id].time === 'Indefinido'}">
+  </td>
+  <td>
+   {{filesLocation(e)}}
+ </td>
+ <td>
+  <i class="fa fa-trash" aria-hidden="true"  ng-click="deleteDocument(e._id)" ng-show="client.documentaryCenterAdmin"></i>
+  <i class="fa fa-pencil" aria-hidden="true" style="margin-left:10px;"  ui-sref-active="active" ui-sref="app.docs.edit({id: e._id})" title="Abrir el documento"></i>
+  <i class="fa fa-eye" aria-hidden="true" style="margin-left:10px;"  ui-sref-active="active" ui-sref="app.docs.history({id: e._id})" title="Ver historial de aprobaciones y documento"></i>
+</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+<!-- End .row -->
+</div>

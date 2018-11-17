@@ -1,0 +1,26 @@
+<div class="animated fadeIn">
+
+<div class="col-sm-12 row-separator">
+   <a class="btn btn-primary"  ui-sref-active="active" ui-sref="app.docs.edit({id: selectedDocument._id})">
+    <i class="fa fa-arrow-left" aria-hidden="true"/>
+  </a>
+</div>   
+
+
+<div class="card" style="width: 25rem;margin-left:1em;"  ng:repeat="e in documentHistory.history | orderBy : created : true">
+  <div class="card-header">
+    <td>Cambio {{documentHistory.history.length - ($index)}}</td>
+  </div>
+  <div class="card-block">
+    <h4 class="card-title"></h4>
+    <p class="card-text" ng-show='!e.list && !e.value  && e.field !== "approvals"'> <strong>{{translateField(e.field)}}</strong> de <strong>{{e.removed}}</strong> a <strong>{{e.added}}</strong></p>
+    <p class="card-text" ng-show='e.list && e.value && e.field !== "approvals"'> Se han <strong>{{retrieveValue(e)}}</strong> un(os) <strong>{{translateField(e.field)}}</strong> </p>
+    <p class="card-text" ng-show='e.field === "approvals"'> Se ha <strong>{{(e.value && e.value==="true") ? 'aprobado' : 'rechazado'}}</strong> el documento. Comentario: <strong>{{e.customText}}</strong></p>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item small">Cambiado el {{e.created |  date: 'yyyy-MM-dd hh:mm:ss a'}} por {{angular.isString(e.user) ? e.user : e.user.username}}</li>
+    </ul>
+  </div>
+</div>
+
+
+</div>

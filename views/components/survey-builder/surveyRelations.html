@@ -1,0 +1,46 @@
+<div class="animated fadeIn" ng-init="retrieveServices()">
+
+ <div id="alertArea"></div>
+ <form name="relationForms" ng-submit="saveSurvey(relationForms.$valid)">
+  <div class="row-separator">
+    <button class="btn btn-primary" ng-click="goToBuilder()">
+      <i class="fa fa-arrow-left" aria-hidden="true"/>
+    </button>
+    <button type="submit" class="btn btn-success" >
+      <i class="fa fa-save" aria-hidden="true"/> Guardar Encuesta
+    </button>
+  </div>
+
+<!--   <div class="alert alert-info">
+   <i class="fa fa-info-circle" aria-hidden="true"></i><strong> Ayuda para seleccion multiple </strong><br/>
+   Si necesita seleccionar multiples clientes, utiliza la <strong>tecla control (CTRL)</strong> dejando presionado mientras hace <strong>click</strong> en los clientes que quiere. Si se quiere seleccionar todos los clientes al mismo tiempo, puede utilizar la combinacion de <strong>CTRL + A</strong> para hacerlo. 
+ </div> -->
+
+ <table class="table table-hover table-responsive" >
+  <thead>
+    <tr>
+     <td><strong>#</strong></td>
+     <td><strong>Pregunta</strong></td>
+     <td><strong>Servicio</strong></td>
+     <td><strong>Clientes</strong></td>
+   </tr>
+ </thead>
+ <tbody>
+   <tr ng:repeat="e in survey.questions">
+     <td>{{$index + 1}}</td>
+     <td>{{e.title}}</td>
+     <td>
+       <select name="services" class="form-control" ng-model="e.service" ng-options="item.service as item.service for item in services" required>
+         <option value="">Seleccione un servicio {{optional ? '(optional)' : ''}}</option>
+       </select>
+     </td>
+     <td>
+     <md-select placeholder="Clientes" ng-model="e.clients" multiple="true" required class="form-control md-no-underline" style="width: 30em;">
+        <md-option ng-repeat="item in jobs" value="{{item.job}}">{{item.job}}</md-option>
+      </md-select>
+    </td>
+  </tr>
+</tbody>
+</table>
+</form>
+</div>
